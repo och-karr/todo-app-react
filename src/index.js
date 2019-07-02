@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './style.css';
 
 let id = 0;
 
 const Todo = props => (
   <li>
-    <input type="checkbox" checked={props.todo.checked} onChange={props.onToggle}/>
-    <button onClick={props.onDelete}>delete</button>
-    <span>{props.todo.text}</span>
+    <input className="toggle-todo" type="checkbox" checked={props.todo.checked} onChange={props.onToggle}/>
+    <span className="todo-text">{props.todo.text}</span>
+    <button className="delete-todo" onClick={props.onDelete}>X</button>
   </li>
 )
 
@@ -21,9 +22,11 @@ class App extends React.Component {
 
   addTodo() {
     const text = prompt("TODO text please")
-    this.setState({
-      todos: [...this.state.todos, {id: id++, text: text, checked: false }],
-    })
+    if (text !== "" && text !== null) {
+      this.setState({
+        todos: [...this.state.todos, {id: id++, text: text, checked: false }],
+      })
+    }
   }
 
   removeTodo(id) {
@@ -47,11 +50,11 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>Todo count: {this.state.todos.length}</div>
-        <div>Unchecked todo count: {this.state.todos.filter(todo => !todo.checked).length}</div>
-        <button onClick={() => this.addTodo()}>Add Todo</button>
-        <ul>
+      <div className="container">
+        <div className="todo-count">Todo count: {this.state.todos.length}</div>
+        <div className="todo-unchecked">Unchecked todo count: {this.state.todos.filter(todo => !todo.checked).length}</div>
+        <button className="add-todo" onClick={() => this.addTodo()}>Add Todo</button>
+        <ol className="todo-list">
           {this.state.todos.map(todo => (
             <Todo 
               onToggle={() => this.toggleTodo(todo.id)}
@@ -59,7 +62,7 @@ class App extends React.Component {
               todo={todo} 
             />
           ))}
-        </ul>
+        </ol>
       </div>
     )
   }
